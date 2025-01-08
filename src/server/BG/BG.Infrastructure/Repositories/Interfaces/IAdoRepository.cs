@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace BG.Application.Interfaces.Repositories;
+﻿namespace BG.Infrastructure.Repositories.Interfaces;
 
 public interface IAdoRepository
 {
@@ -11,7 +9,7 @@ public interface IAdoRepository
 
     public Task<int> OnlyExecuteAsync(string query, Dictionary<string, object>? parameters = null,
         bool useStoredProcedure = true, bool timeout = true);
-    
+
     Task<T> SpExecuteAsync<T>(string name, Dictionary<string, object>? parameters = null, bool timeout = true)
         where T : class, new();
 }
