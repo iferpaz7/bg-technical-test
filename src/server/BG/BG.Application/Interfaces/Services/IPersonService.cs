@@ -1,5 +1,4 @@
-﻿
-namespace BG.Application.Interfaces.Services;
+﻿namespace BG.Application.Interfaces.Services;
 
 public interface IPersonService
 {

@@ -6,23 +6,38 @@ public class PersonService(IAdoRepository adoRepository) : IPersonService
 
     public async Task<ApiResponse> AddAsync(Person person)
     {
-        throw new NotImplementedException();
+        var parameters = new Dictionary<string, object>
+        {
+            { "person", CustomConverters.SerializeObjectCustom<Person>(person) }
+        };
+        return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Insert", parameters);
     }
 
     public async Task<ApiResponse> DeleteAsync(int userId, int id)
     {
-        throw new NotImplementedException();
+        var parameters = new Dictionary<string, object>
+        {
+            { "userId", userId },
+            { "id", id }
+        };
+        return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Delete", parameters);
     }
 
     public async Task<ApiResponse> GetAsync(Dictionary<string, object> parameters)
     {
         var dt = await adoRepository.GetDataTableAsync($"{ModuleName}", parameters);
-
-        return new ApiResponse { };
+        return CustomValidators.DataTableIsNull(dt)
+            ? new ApiResponse { code = "0", message = "Data not found!" }
+            : new ApiResponse { code = "1", payload = CustomConverters.DataTableToJson(dt) };
     }
 
     public async Task<ApiResponse> UpdateAsync(int id, Person person)
     {
-        throw new NotImplementedException();
+        var parameters = new Dictionary<string, object>
+        {
+            { "id", id },
+            { "person", CustomConverters.SerializeObjectCustom<Person>(person) }
+        };
+        return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Update", parameters);
     }
 }
