@@ -1,8 +1,7 @@
-﻿using System.Reflection;
-using System.Threading.RateLimiting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Scrutor;
+using System.Threading.RateLimiting;
 
 namespace BG.API.Extensions;
 
@@ -12,15 +11,21 @@ public static class ApplicationServicesExtensions
         IConfiguration configuration)
     {
         //MAPPING DTOs
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddControllers().AddNewtonsoftJson(x =>
         {
             x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             x.SerializerSettings.ContractResolver = new DefaultContractResolver
-                { NamingStrategy = new CamelCaseNamingStrategy() };
+            { NamingStrategy = new CamelCaseNamingStrategy() };
         });
-        ;
+
+        //VALIDATE CLIENT ID HEADER GLOBALLY IF IS NECCESSARY
+        //services.AddControllers(options =>
+        //{
+        //    options.Filters.Add(new ValidateClientIdAttribute("app-bg-tech-test"));
+        //});
+
 
         //Restrict request
         services.AddRateLimiter(options =>

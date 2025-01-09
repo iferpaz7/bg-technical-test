@@ -1,7 +1,5 @@
 ﻿using BG.Application.DTOs.Person;
-using BG.Infrastructure.Data;
 using Common.Utils.Security.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BG.Application.Services;
@@ -36,7 +34,7 @@ public class PersonService(
 
         person.FullName = AddFullName(createPersonDto.FirstName, createPersonDto.LastName);
         person.Code = CreateCode(createPersonDto.IdCard, identificationType.Code);
-        
+
         context.Persons.Add(person);
 
         await context.SaveChangesAsync();
@@ -82,23 +80,23 @@ public class PersonService(
         };
         var dt = await adoRepository.GetDataTableAsync($"{ModuleName}", parameters);
         return CustomValidators.DataTableIsNull(dt)
-            ? new ApiResponse { Code = "0", Message = "Data not found!" }
+            ? new ApiResponse { Code = "0", Message = "No se encontraron datos!" }
             : new ApiResponse { Code = "1", Payload = CustomConverters.DataTableToJson(dt) };
     }
 
     public async Task<ApiResponse> GetByIdAsync(int id)
     {
         var person = await context.Persons.FindAsync(id);
+
         return person is null
-            ? new ApiResponse { Code = "0", Message = "Person not found!" }
-            : new ApiResponse { Code = "1", Payload = CustomConverters.SerializeObjectCustom<PersonDto>(person) };
+            ? new ApiResponse { Code = "0", Message = "Persona no encontrada!" }
+            : new ApiResponse { Code = "1", Payload = mapper.Map<PersonDto>(person) };
     }
 
     public async Task<ApiResponse> UpdateAsync(int id, UpdatePersonDto updatePersonDto)
     {
-        var person = await context.Persons.FindAsync(id);
 
-        if (person is null)
+        if (!await context.Persons.AnyAsync(x=> x.Id == id))
             return new ApiResponse { Code = "0", Message = "Persona no encontrada." };
 
         if (id != updatePersonDto.Id)
@@ -110,15 +108,10 @@ public class PersonService(
         if (identificationType is null)
             return new ApiResponse { Code = "0", Message = "Tipo de identificación no encontrado." };
 
-        person.FirstName = updatePersonDto.FirstName;
-        person.LastName = updatePersonDto.LastName;
-        person.Email = updatePersonDto.Email;
-        person.IdCard = updatePersonDto.IdCard;
-        person.IdentificationTypeId = updatePersonDto.IdentificationTypeId;
+        var person = mapper.Map<Person>(updatePersonDto);
+
         person.FullName = AddFullName(updatePersonDto.FirstName, updatePersonDto.LastName);
         person.Code = CreateCode(updatePersonDto.IdCard, identificationType.Code);
-        person.UserId = updatePersonDto.UserId;
-        person.Enabled = updatePersonDto.Enabled;
 
         context.Persons.Update(person);
         await context.SaveChangesAsync();

@@ -1,4 +1,4 @@
-using System.IO.Compression;
+using Autofac.Extensions.DependencyInjection;
 using BG.API.Extensions;
 using BG.API.Extensions.Documentation;
 using BG.API.Middleware;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Context;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,9 @@ builder.Services.Configure<GzipCompressionProviderOptions>(options =>
     options.Level = CompressionLevel.SmallestSize;
 });
 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,6 +88,9 @@ if (app.Environment.IsDevelopment())
 app.UseResponseCompression();
 
 app.UseMiddleware<ExceptionMiddleware>();
+
+//Middleware to validate the client id
+//app.UseMiddleware<ClientIdValidationMiddleware>();
 
 app.UseDefaultFiles();
 
@@ -113,6 +120,8 @@ app.Use(async (context, next) =>
 app.MapControllers().RequireAuthorization();
 
 app.MapFallbackToFile("/index.html");
+
+//Insert seed data on application starts
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

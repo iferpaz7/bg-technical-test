@@ -1,5 +1,4 @@
 ﻿using BG.Application.DTOs.Person;
-using BG.Application.DTOs.User;
 
 namespace BG.Application.Interfaces.Services;
 
