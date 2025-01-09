@@ -41,6 +41,8 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
 	</ItemGroup>
+	
+	<!--Deploy angular client on publish api depends of environment-->
 
 	<Target Name="PublishDemoStaging" BeforeTargets="PrepareForBuild" AfterTargets="ComputeFilesToPublish" Condition="'$(EnvironmentName)' == 'Staging'">
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
