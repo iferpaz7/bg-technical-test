@@ -35,10 +35,10 @@ export class PersonWebRepository implements PersonRepository {
           if (response.code !== '1') {
             return { persons: [], totalRecords: 0 };
           }
-
+          const persons = JSON.parse(response.payload);
           return {
-            persons: response.payload,
-            totalRecords: response.payload[0]?.totalRecords,
+            persons,
+            totalRecords: persons[0]?.totalRecords,
           };
         }),
       );

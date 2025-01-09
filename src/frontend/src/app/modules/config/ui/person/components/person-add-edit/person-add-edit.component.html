@@ -1,0 +1,67 @@
+<form [formGroup]="personForm" (ngSubmit)="onSave()" autocomplete="off">
+  <app-mat-custom-dialog
+    [containerTemplate]="contentTemplate"
+    [actionsTemplate]="actionsTemplate"
+    [icon]="dialogIcon()"
+    [title]="dialogTitle()"
+    (close)="onClose()"
+  />
+  <ng-template #contentTemplate>
+    <mat-form-field class="w-100">
+      <mat-label>Nombre:</mat-label>
+      <input type="text" matInput formControlName="firstName" required />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Apellido:</mat-label>
+      <input type="text" matInput formControlName="lastName" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tipo Identificación</mat-label>
+      <mat-select formControlName="identificationTypeId">
+        @for (item of identificationTypes; track $index) {
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Nro. Identificación:</mat-label>
+      <input type="text" matInput formControlName="idCard" required />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Email:</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        placeholder="example@example.com"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Usuario:</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="username"
+        placeholder="ivan.paz"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Contraseña:</mat-label>
+      <input type="password" matInput formControlName="password" required />
+    </mat-form-field>
+  </ng-template>
+  <ng-template #actionsTemplate>
+    <button mat-raised-button>
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Save Icon"
+        fontIcon="save"
+      ></mat-icon>
+      Guardar
+    </button>
+  </ng-template>
+</form>

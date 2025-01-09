@@ -1,5 +1,12 @@
 <mat-card>
   <mat-card-content>
+    <div class="row mb-3">
+      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
+        <button (click)="onDialogOpen()" type="button" mat-raised-button>
+          <mat-icon>person_add</mat-icon> Añadir
+        </button>
+      </div>
+    </div>
     <div class="row mt-3">
       <div class="col">
         @if (this.persons.length > 0) {
@@ -31,8 +38,6 @@
           <mat-icon>edit</mat-icon>
           Editar
         </button>
-      </mat-menu>
-      <mat-menu #menu="matMenu">
         <button mat-menu-item>
           <mat-icon>delete</mat-icon>
           Eliminar
