@@ -11,6 +11,10 @@ export class TokenUseCase {
     return this._tokenRepository.getToken();
   }
 
+  getDecodedToken() {
+    return this._tokenRepository.getDecodedToken();
+  }
+
   setToken(token: string) {
     this._tokenRepository.setToken(token);
   }
