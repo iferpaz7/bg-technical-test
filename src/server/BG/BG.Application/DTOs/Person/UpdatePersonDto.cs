@@ -9,4 +9,5 @@ public class UpdatePersonDto
     public string Email { get; set; }
     public int IdentificationTypeId { get; set; }
     public bool Enabled { get; set; }
+    public int UserId { get; set; }
 }

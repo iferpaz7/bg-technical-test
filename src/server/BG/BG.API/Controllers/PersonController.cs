@@ -1,6 +1,5 @@
 ﻿using BG.API.Extensions;
 using BG.Application.DTOs.Person;
-using BG.Application.DTOs.User;
 using BG.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,12 +22,14 @@ public class PersonController(IPersonService personService) : BaseApiController
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] CreatePersonDto createPersonDto)
     {
+        createPersonDto.UserId = User.GetUserId();
         return Ok(await personService.AddAsync(createPersonDto));
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody] UpdateUserDto updateUserDto)
+    public async Task<ActionResult> Put(int id, [FromBody] UpdatePersonDto updateUserDto)
     {
+        updateUserDto.UserId = User.GetUserId();
         return Ok(await personService.UpdateAsync(id, updateUserDto));
     }
 

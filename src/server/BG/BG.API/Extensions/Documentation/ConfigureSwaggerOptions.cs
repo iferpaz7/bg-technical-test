@@ -12,16 +12,14 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IC
     public void Configure(SwaggerGenOptions options)
     {
         foreach (var description in provider.ApiVersionDescriptions)
-        {
             options.SwaggerDoc(description.GroupName, CreateVersionInfo(description, configuration));
-        }
     }
 
     public void Configure(string? name, SwaggerGenOptions options)
     {
         Configure(options);
     }
-    
+
     private static OpenApiInfo CreateVersionInfo(ApiVersionDescription description, IConfiguration configuration)
     {
         var swaggerInfo = configuration.GetSection("SwaggerInfo");
@@ -37,12 +35,12 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IC
             {
                 Name = swaggerInfo["ContactName"] ?? "Default Support Team",
                 Email = swaggerInfo["ContactEmail"] ?? "default@support.com",
-                Url = new Uri(swaggerInfo["ContactUrl"] ?? $"https://default.support.com")
+                Url = new Uri(swaggerInfo["ContactUrl"] ?? "https://default.support.com")
             },
             License = new OpenApiLicense
             {
                 Name = swaggerInfo["LicenseName"] ?? "MIT License",
-                Url = new Uri(swaggerInfo["LicenseUrl"] ?? $"https://opensource.org/licenses/MIT")
+                Url = new Uri(swaggerInfo["LicenseUrl"] ?? "https://opensource.org/licenses/MIT")
             }
         };
     }

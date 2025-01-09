@@ -1,4 +1,5 @@
 ﻿using BG.Application.DTOs;
+using BG.Application.DTOs.Person;
 using BG.Application.DTOs.User;
 using BG.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BG.API.Controllers;
 
-public class AccountController(IUserService userService, IJwtTokenService jwtTokenService) : BaseApiController
+public class AccountController(IUserService userService, IPersonService personService, IJwtTokenService jwtTokenService)
+    : BaseApiController
 {
     [AllowAnonymous]
     [HttpPost("login")]
@@ -15,13 +17,11 @@ public class AccountController(IUserService userService, IJwtTokenService jwtTok
         var response = await userService.LoginAsync(loginDto);
 
         if (response.Code == "1")
-        {
             response.Payload = new
             {
-                User = loginDto.Username,
-                Token = jwtTokenService.Create(new UserDto() { Username = loginDto.Username })
+                loginDto.Username,
+                Token = jwtTokenService.Create(new UserDto { Username = loginDto.Username })
             };
-        }
 
         return Ok(response);
     }
@@ -29,18 +29,17 @@ public class AccountController(IUserService userService, IJwtTokenService jwtTok
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<UserDto>> Register([FromBody] CreateUserDto createUserDto)
+    public async Task<ActionResult<UserDto>> Register([FromBody] CreatePersonDto createPersonDto)
     {
-        var response = await userService.AddAsync(createUserDto);
+        var response = await personService.AddAsync(createPersonDto);
 
         if (response.Code == "1")
-        {
             response.Payload = new
             {
-                User = createUserDto.Username,
-                Token = jwtTokenService.Create(new UserDto() { Username = createUserDto.Username })
+                createPersonDto.Username,
+                Token = jwtTokenService.Create(new UserDto
+                    { Username = createPersonDto.Username }),
             };
-        }
 
         return Ok(response);
     }

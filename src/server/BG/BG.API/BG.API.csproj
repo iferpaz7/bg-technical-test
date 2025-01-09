@@ -11,37 +11,37 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Asp.Versioning.Mvc" />
-		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
-		<PackageReference Include="Elastic.Serilog.Sinks" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
+		<PackageReference Include="Asp.Versioning.Mvc"/>
+		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer"/>
+		<PackageReference Include="Elastic.Serilog.Sinks"/>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+		<PackageReference Include="Microsoft.AspNetCore.SpaProxy"/>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" />
-		<PackageReference Include="Scrutor" />
-		<PackageReference Include="Serilog.AspNetCore" />
-		<PackageReference Include="Serilog.Extensions.Logging" />
-		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="Swashbuckle.AspNetCore" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens"/>
+		<PackageReference Include="Scrutor"/>
+		<PackageReference Include="Serilog.AspNetCore"/>
+		<PackageReference Include="Serilog.Extensions.Logging"/>
+		<PackageReference Include="Serilog.Sinks.Console"/>
+		<PackageReference Include="Swashbuckle.AspNetCore"/>
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BG.Application\BG.Application.csproj" />
+		<ProjectReference Include="..\BG.Application\BG.Application.csproj"/>
 	</ItemGroup>
 
 	<Target Name="PublishDemoStaging" BeforeTargets="PrepareForBuild" AfterTargets="ComputeFilesToPublish" Condition="'$(EnvironmentName)' == 'Staging'">
-		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run staging" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install"/>
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run staging"/>
 	</Target>
 	<Target Name="PublishDemoPrd" BeforeTargets="PrepareForBuild" AfterTargets="ComputeFilesToPublish" Condition="'$(EnvironmentName)' == 'Production'">
-		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run prod" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install"/>
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run prod"/>
 	</Target>
 
 </Project>

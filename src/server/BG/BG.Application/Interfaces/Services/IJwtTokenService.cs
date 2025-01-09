@@ -4,5 +4,5 @@ namespace BG.Application.Interfaces.Services;
 
 public interface IJwtTokenService
 {
-    string Create(UserDto appUser);
+    string Create(UserDto userDto);
 }
