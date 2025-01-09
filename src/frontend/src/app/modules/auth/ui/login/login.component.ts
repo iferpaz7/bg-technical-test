@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { IdentificationType } from '@shared/models/identification-type';
 import { IdentificationTypeService } from '@shared/services/identification-type.service';
+import { ToasterService } from 'acontplus-utils';
 
 @Component({
   selector: 'app-login',
@@ -52,7 +53,7 @@ import { IdentificationTypeService } from '@shared/services/identification-type.
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    email: new FormControl('', [
+    username: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
       Validators.maxLength(100),
@@ -68,7 +69,7 @@ export class LoginComponent {
       Validators.minLength(6),
       Validators.maxLength(100),
     ]),
-    identificationTypeId: new FormControl('', [Validators.required]),
+    identificationTypeId: new FormControl(0, [Validators.required]),
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', Validators.required),
   });
@@ -77,7 +78,7 @@ export class LoginComponent {
   private readonly _identificationTypeService = inject(
     IdentificationTypeService,
   );
-  
+  private readonly _tS = inject(ToasterService);
   loadData() {
     this._identificationTypeService.get().subscribe((response) => {
       this.identificationTypes = response.identificationTypes;
@@ -89,7 +90,12 @@ export class LoginComponent {
       ...this.loginForm.value,
     } as User;
 
-    this._authUseCase.login(user);
+    this._authUseCase.login(user).subscribe((response) => {
+      this._tS.toastr({
+        type: response.code === '1' ? 'success' : 'warning',
+        message: response.message,
+      });
+    });
   }
 
   ngOnInit() {
@@ -97,10 +103,37 @@ export class LoginComponent {
   }
 
   signup() {
+    let identificationTypeCode = this.identificationTypes.find(
+      (x: IdentificationType) =>
+        (x.id = <number>this.signupForm.value.identificationTypeId),
+    )?.code;
+    if (
+      this.signupForm.value.idCard?.length !== 13 &&
+      identificationTypeCode === '04'
+    ) {
+      return this._tS.toastr({
+        type: 'warning',
+        message: 'El ruc debe tener 13 dígitos',
+      });
+    }
+    if (
+      this.signupForm.value.idCard?.length !== 10 &&
+      identificationTypeCode === '05'
+    ) {
+      return this._tS.toastr({
+        type: 'warning',
+        message: 'La cédula debe tener 10 dígitos',
+      });
+    }
     const data = {
       ...this.signupForm.value,
     };
 
-    this._authUseCase.signup(data);
+    this._authUseCase.signup(data).subscribe((response) => {
+      this._tS.toastr({
+        type: response.code === '1' ? 'success' : 'warning',
+        message: response.message,
+      });
+    });
   }
 }

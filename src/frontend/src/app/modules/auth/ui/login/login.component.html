@@ -20,8 +20,8 @@
               <input
                 type="text"
                 matInput
-                placeholder="Email"
-                formControlName="email"
+                placeholder="Usuario"
+                formControlName="username"
               />
             </mat-form-field>
             <mat-form-field appearance="fill" class="w-100">
@@ -66,8 +66,16 @@
               <mat-label>Apellido:</mat-label>
               <input type="text" matInput formControlName="lastName" required />
             </mat-form-field>
+            <mat-form-field>
+              <mat-label>Tipo Identificación</mat-label>
+              <mat-select formControlName="identificationTypeId">
+                @for (item of identificationTypes; track $index) {
+                  <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
             <mat-form-field class="w-100">
-              <mat-label>Nro. Identificación: (Ruc)</mat-label>
+              <mat-label>Nro. Identificación:</mat-label>
               <input type="text" matInput formControlName="idCard" required />
             </mat-form-field>
             <mat-form-field class="w-100">
@@ -80,14 +88,7 @@
                 required
               />
             </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tipo Identificación</mat-label>
-              <mat-select>
-                @for (item of identificationTypes; track $index) {
-                  <mat-option [value]="item.id">{{ item.name }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+
             <mat-form-field class="w-100">
               <mat-label>Usuario:</mat-label>
               <input

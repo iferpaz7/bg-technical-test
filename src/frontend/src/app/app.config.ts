@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authenticationProvider } from '@modules/auth/providers';
@@ -28,5 +28,9 @@ export const appConfig: ApplicationConfig = {
     ...authenticationProvider,
     { provide: ENVIRONMENT, useValue: environment }, //pass environment to the library to inject values to interceptors
     provideAnimationsAsync(),
+    provideToastr({
+      preventDuplicates: true,
+      positionClass: 'toast-top-center',
+    }),
   ],
 };
