@@ -12,6 +12,7 @@ import {
   loaderInterceptor,
 } from 'acontplus-utils'; //this library is public, created by me
 import { environment } from '../environments/environment';
+import { configProvider } from '@config/providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
       ]),
     ),
     ...authenticationProvider,
+    ...configProvider,
     { provide: ENVIRONMENT, useValue: environment }, //pass environment to the library to inject values to interceptors
     provideAnimationsAsync(),
     provideToastr({

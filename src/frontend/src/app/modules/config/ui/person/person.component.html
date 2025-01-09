@@ -1,1 +1,51 @@
-<p>person works!</p>
+<mat-card>
+  <mat-card-content>
+    <div class="row mt-3">
+      <div class="col">
+        @if (this.persons.length > 0) {
+          <div class="table-responsive">
+            <app-mat-dynamic-table
+              [templateOp]="tableOptions"
+              [dataList]="persons"
+              [displayColumnDefs]="columnDefs"
+              [displayedColumns]="columns"
+            />
+          </div>
+          <mat-paginator
+            #paginator
+            [length]="pagination().totalRecords"
+            [pageIndex]="pagination().pageIndex"
+            [pageSize]="pagination().pageSize"
+            [pageSizeOptions]="pagination().pageSizeOptions"
+            (page)="onPageChanged($event)"
+            showFirstLastButtons
+            aria-label="Select Page"
+          />
+        }
+      </div>
+    </div>
+
+    <ng-template #tableOptions let-item="item">
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          Editar
+        </button>
+      </mat-menu>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          Eliminar
+        </button>
+      </mat-menu>
+
+      <button
+        [matMenuTriggerFor]="menu"
+        aria-label="Open Options"
+        mat-icon-button
+      >
+        <mat-icon>menu</mat-icon>
+      </button></ng-template
+    >
+  </mat-card-content>
+</mat-card>
