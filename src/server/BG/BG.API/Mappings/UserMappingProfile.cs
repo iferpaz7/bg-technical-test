@@ -1,6 +1,8 @@
-﻿using BG.Application.DTOs.User;
+﻿using AutoMapper;
+using BG.Application.DTOs.User;
+using BG.Core.Entities;
 
-namespace BG.Application.Mappings;
+namespace BG.API.Mappings;
 
 public class UserMappingProfile : Profile
 {

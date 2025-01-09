@@ -38,7 +38,7 @@ public class AccountController(IUserService userService, IPersonService personSe
             {
                 createPersonDto.Username,
                 Token = jwtTokenService.Create(new UserDto
-                    { Username = createPersonDto.Username }),
+                { Username = createPersonDto.Username }),
             };
 
         return Ok(response);

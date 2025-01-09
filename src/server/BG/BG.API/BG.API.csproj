@@ -13,6 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Mvc" />
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
 		<PackageReference Include="Elastic.Serilog.Sinks" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
