@@ -14,11 +14,14 @@ public class AccountController(IUserService userService, IJwtTokenService jwtTok
     {
         var response = await userService.LoginAsync(loginDto);
 
-        response.Payload = new
+        if (response.Code == "1")
         {
-            User = loginDto.Username,
-            Token = jwtTokenService.Create(new UserDto() { Username = loginDto.Username })
-        };
+            response.Payload = new
+            {
+                User = loginDto.Username,
+                Token = jwtTokenService.Create(new UserDto() { Username = loginDto.Username })
+            };
+        }
 
         return Ok(response);
     }
@@ -30,11 +33,14 @@ public class AccountController(IUserService userService, IJwtTokenService jwtTok
     {
         var response = await userService.AddAsync(createUserDto);
 
-        response.Payload = new
+        if (response.Code == "1")
         {
-            User = createUserDto.Username,
-            Token = jwtTokenService.Create(new UserDto() { Username = createUserDto.Username })
-        };
+            response.Payload = new
+            {
+                User = createUserDto.Username,
+                Token = jwtTokenService.Create(new UserDto() { Username = createUserDto.Username })
+            };
+        }
 
         return Ok(response);
     }

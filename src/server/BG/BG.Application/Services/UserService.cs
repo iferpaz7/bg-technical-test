@@ -14,11 +14,25 @@ public class UserService(
 {
     public async Task<ApiResponse> AddAsync(CreateUserDto createUserDto)
     {
-        var user = mapper.Map<User>(createUserDto);
+        if (await context.Users.AnyAsync(x => x.Username == createUserDto.Username))
+        {
+            return new ApiResponse { Code = "0", Message = "Usuario ya existe" };
+        }
+
+        var user = new User
+        {
+            Username = createUserDto.Username,
+        };
+
+        var dataProtectionSettings = configuration.GetSection("DataProtection");
+
+        user.Password =
+            await encryptionService.EncryptToBytesAsync(dataProtectionSettings["ProtectorKey"], createUserDto.Password);
+
         context.Users.Add(user);
         await context.SaveChangesAsync();
         return new ApiResponse
-            { Code = "1", Message = "Usuario creado correctamente.", Payload = mapper.Map<UserDto>(user) };
+            { Code = "1", Message = "Usuario creado correctamente." };
     }
 
     public async Task<ApiResponse> DeleteAsync(int userId, int id)
@@ -45,12 +59,15 @@ public class UserService(
     {
         var dataProtectionSettings = configuration.GetSection("DataProtection");
 
-        var encryptedPassword =
-            await encryptionService.EncryptToBytesAsync(dataProtectionSettings["ProtectorKey"], loginDto.Password);
         var user = await context.Users.FirstOrDefaultAsync(x =>
-            x.Username == loginDto.Username && x.Password == encryptedPassword);
-        return user is null
-            ? new ApiResponse { Code = "0", Message = "Usuario no existe." }
+            x.Username == loginDto.Username);
+
+        var decryptedPassword =
+            await encryptionService.DecryptFromBytesAsync(dataProtectionSettings["ProtectorKey"], user.Password);
+
+
+        return loginDto.Password != decryptedPassword
+            ? new ApiResponse { Code = "0", Message = "Contraseña incorrecta." }
             : new ApiResponse { Code = "1", Message = "Login Correcto" };
     }
 

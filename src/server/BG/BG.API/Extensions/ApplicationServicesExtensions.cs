@@ -24,7 +24,11 @@ public static class ApplicationServicesExtensions
 
         //DYNAMIC DEPENDENCY INJECTION WITH SCRUTOR
         string[] nameSpaces =
-            ["BG.Application.Interfaces.Services"];
+        [
+            "BG.Application.Services", 
+            "Common.Utils.Security.Services",
+            "BG.Infrastructure.Repositories.Implementations"
+        ];
         services.Scan(scan => scan
             .FromApplicationDependencies()
             .AddClasses(classes => classes.InNamespaces(nameSpaces))
