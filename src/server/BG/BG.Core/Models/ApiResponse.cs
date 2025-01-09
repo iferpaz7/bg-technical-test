@@ -2,7 +2,7 @@
 
 public class ApiResponse
 {
-    public string code { get; set; }
-    public string message { get; set; }
-    public dynamic payload { get; set; }
+    public string Code { get; set; }
+    public string Message { get; set; }
+    public dynamic Payload { get; set; }
 }

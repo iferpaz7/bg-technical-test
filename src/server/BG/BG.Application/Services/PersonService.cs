@@ -1,14 +1,18 @@
-﻿namespace BG.Application.Services;
+﻿using BG.Application.DTOs.Person;
+using BG.Application.DTOs.User;
+using BG.Infrastructure.Data;
 
-public class PersonService(IAdoRepository adoRepository) : IPersonService
+namespace BG.Application.Services;
+
+public class PersonService(IAdoRepository adoRepository, ApplicationDbContext context) : IPersonService
 {
     private const string ModuleName = "Config.Person_";
 
-    public async Task<ApiResponse> AddAsync(Person person)
+    public async Task<ApiResponse> AddAsync(CreatePersonDto createPersonDto)
     {
         var parameters = new Dictionary<string, object>
         {
-            { "person", CustomConverters.SerializeObjectCustom<Person>(person) }
+            { "person", CustomConverters.SerializeObjectCustom<CreatePersonDto>(createPersonDto) }
         };
         return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Insert", parameters);
     }
@@ -23,20 +27,32 @@ public class PersonService(IAdoRepository adoRepository) : IPersonService
         return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Delete", parameters);
     }
 
-    public async Task<ApiResponse> GetAsync(Dictionary<string, object> parameters)
+    public async Task<ApiResponse> GetAsync(PersonaFilterDto personaFilterDto)
     {
+        var parameters = new Dictionary<string, object>
+        {
+            { "person", CustomConverters.SerializeObjectCustom<PersonaFilterDto>(personaFilterDto) }
+        };
         var dt = await adoRepository.GetDataTableAsync($"{ModuleName}", parameters);
         return CustomValidators.DataTableIsNull(dt)
-            ? new ApiResponse { code = "0", message = "Data not found!" }
-            : new ApiResponse { code = "1", payload = CustomConverters.DataTableToJson(dt) };
+            ? new ApiResponse { Code = "0", Message = "Data not found!" }
+            : new ApiResponse { Code = "1", Payload = CustomConverters.DataTableToJson(dt) };
     }
 
-    public async Task<ApiResponse> UpdateAsync(int id, Person person)
+    public async Task<ApiResponse> GetByIdAsync(int id)
+    {
+        var person = await context.Persons.FindAsync(id);
+        return person is null
+            ? new ApiResponse { Code = "0", Message = "Person not found!" }
+            : new ApiResponse { Code = "1", Payload = CustomConverters.SerializeObjectCustom<PersonDto>(person) };
+    }
+
+    public async Task<ApiResponse> UpdateAsync(int id, UpdateUserDto updateUserDto)
     {
         var parameters = new Dictionary<string, object>
         {
             { "id", id },
-            { "person", CustomConverters.SerializeObjectCustom<Person>(person) }
+            { "person", CustomConverters.SerializeObjectCustom<UpdateUserDto>(updateUserDto) }
         };
         return await adoRepository.SpExecuteAsync<ApiResponse>($"{ModuleName}Update", parameters);
     }

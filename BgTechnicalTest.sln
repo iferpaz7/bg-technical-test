@@ -21,11 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Directory.Packages.props = Directory.Packages.props
 		Nuget.config = Nuget.config
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{0FA4D1D7-FC17-4C5A-8B0A-BD71FCF101DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Utils", "src\server\Common\Common.Utils\Common.Utils.csproj", "{97F32851-A256-44EE-8F47-68EC7B845998}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{B17DFC13-4D71-4F26-9FD7-69BA81A68C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,5 +69,6 @@ Global
 		{936E5012-08CC-4154-B5E3-B7FFB3B5DE92} = {1BDEDD9D-27D1-41FC-B522-DE71162B0960}
 		{0FA4D1D7-FC17-4C5A-8B0A-BD71FCF101DD} = {3E271745-4FE5-430C-A223-F1B458C39825}
 		{97F32851-A256-44EE-8F47-68EC7B845998} = {0FA4D1D7-FC17-4C5A-8B0A-BD71FCF101DD}
+		{B17DFC13-4D71-4F26-9FD7-69BA81A68C83} = {70E70E01-4D89-4942-B565-7AD1C12C4D6A}
 	EndGlobalSection
 EndGlobal
