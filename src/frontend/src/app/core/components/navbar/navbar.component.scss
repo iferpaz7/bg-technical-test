@@ -1,0 +1,58 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    span {
+      font-weight: 500;
+    }
+  }
+}
+
+:host {
+  width: 100%;
+}
+
+/* user-navbar.component.scss */
+.app-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+
+  .app-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .spacer {
+    flex: 1; /* Push content to the edges */
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+
+    .profile-button {
+      display: flex;
+      align-items: center;
+      text-transform: none; /* Prevent uppercase in Material buttons */
+      color: white;
+
+      mat-icon {
+        margin-right: 8px;
+        font-size: 24px; /* Adjust size as needed */
+      }
+
+      .username {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+}

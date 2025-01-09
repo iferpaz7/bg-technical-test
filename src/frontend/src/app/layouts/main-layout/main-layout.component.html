@@ -1,3 +1,57 @@
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="vh-100 d-flex flex-column">
+  <mat-sidenav-container class="sidenav-container flex-grow-1">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="isMobile() ? 'dialog' : 'navigation'"
+      [mode]="isMobile() ? 'over' : 'side'"
+      [opened]="isMobile() === false"
+    >
+      <mat-toolbar>Menú</mat-toolbar>
+      <app-sidebar />
+    </mat-sidenav>
+    <mat-sidenav-content class="p-3">
+      <mat-toolbar>
+        @if (isMobile()) {
+          <button
+            type="button"
+            class="sidenav-toggle"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()"
+          >
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+        }
+        <app-navbar />
+      </mat-toolbar>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+
+      <footer class="footer mt-auto p-3">
+        <div
+          class="container-fluid d-flex justify-content-between align-items-center"
+        >
+          <div class="row g-4">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <p class="mb-0">
+                Copyright &copy; 2024
+                <a
+                  class="text-decoration-none me-3 text-danger"
+                  href="https://www.bancoguayaquil.com/"
+                  target="_blank"
+                  >Banco Guayaquil</a
+                >
+              </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-12">
+              <app-social-links />
+            </div>
+          </div>
+        </div>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

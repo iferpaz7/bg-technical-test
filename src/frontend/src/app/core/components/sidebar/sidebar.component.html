@@ -1,0 +1,21 @@
+<mat-nav-list>
+  @for (item of menus; track $index) {
+    <a
+      mat-list-item
+      [routerLink]="item.path"
+      class="sidebar-link"
+      routerLinkActive="tonal"
+      (click)="closeSidenav()"
+    >
+      <fa-icon [icon]="item.icon"></fa-icon> {{ item.title }}
+    </a>
+  }
+  <a
+    mat-list-item
+    class="sidebar-link"
+    routerLinkActive="tonal"
+    (click)="logout()"
+  >
+    <mat-icon>logout</mat-icon> Salir
+  </a>
+</mat-nav-list>

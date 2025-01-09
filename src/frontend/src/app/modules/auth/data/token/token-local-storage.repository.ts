@@ -3,6 +3,7 @@ import { TokenRepository } from '../../domain/repositories/token.repository';
 import { TokenModel } from '../../domain/models/token.model';
 import { jwtDecode } from 'jwt-decode';
 import { ENVIRONMENT } from 'acontplus-utils';
+import { UserData } from '@modules/auth/domain/models/user-data.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,20 @@ export class TokenLocalStorageRepository extends TokenRepository {
 
   getToken(): string | null {
     return localStorage.getItem(this._key);
+  }
+
+  getDecodedToken(): UserData | null {
+    const jwt = this.getToken();
+    if (jwt) {
+      let token = jwtDecode<any>(jwt);
+      const username =
+        token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+        token.name;
+      return {
+        username: username,
+      };
+    }
+    return null; // Return null if no JWT or something goes wrong
   }
 
   setToken(token: string): void {

@@ -25,6 +25,8 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { IdentificationType } from '@shared/models/identification-type';
 import { IdentificationTypeService } from '@shared/services/identification-type.service';
 import { ToasterService } from 'acontplus-utils';
+import {SocialLinksComponent} from "@shared/components/social-links/social-links.component";
+import {ThemeToggleComponent} from "@core/theme/theme-toggle.component";
 
 @Component({
   selector: 'app-login',
@@ -47,6 +49,8 @@ import { ToasterService } from 'acontplus-utils';
     MatIconModule,
     MatSelect,
     MatOption,
+    SocialLinksComponent,
+    ThemeToggleComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
