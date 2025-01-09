@@ -41,6 +41,19 @@ public class UserService(
         return new ApiResponse { Code = "1", Message = "Usuario eliminado correctamente." };
     }
 
+    public async Task<ApiResponse> LoginAsync(LoginDto loginDto)
+    {
+        var dataProtectionSettings = configuration.GetSection("DataProtection");
+
+        var encryptedPassword =
+            await encryptionService.EncryptToBytesAsync(dataProtectionSettings["ProtectorKey"], loginDto.Password);
+        var user = await context.Users.FirstOrDefaultAsync(x =>
+            x.Username == loginDto.Username && x.Password == encryptedPassword);
+        return user is null
+            ? new ApiResponse { Code = "0", Message = "Usuario no existe." }
+            : new ApiResponse { Code = "1", Message = "Login Correcto" };
+    }
+
     public async Task<ApiResponse> GetAsync(UserFilterDto userFilterDto)
     {
         var query = from user in context.Users
