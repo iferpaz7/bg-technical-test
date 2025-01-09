@@ -30,6 +30,12 @@ public class PersonService(
         if (identificationType is null)
             return new ApiResponse { Code = "0", Message = "Tipo de identificación no encontrado." };
 
+        if (identificationType.Code == "04" && !ValidateRuc(createPersonDto.IdCard.Length))
+            return new ApiResponse { Code = "0", Message = "El ruc debe tener 13 digitos" };
+
+        if (identificationType.Code == "05" && !ValidateCedula(createPersonDto.IdCard.Length))
+            return new ApiResponse { Code = "0", Message = "La cédula debe tener 10 digitos" };
+
         var person = mapper.Map<Person>(createPersonDto);
 
         person.FullName = AddFullName(createPersonDto.FirstName, createPersonDto.LastName);
@@ -76,9 +82,10 @@ public class PersonService(
     {
         var parameters = new Dictionary<string, object>
         {
-            { "person", CustomConverters.SerializeObjectCustom<PersonaFilterDto>(personaFilterDto) }
+            { "userId", personaFilterDto.UserId },
+            { "filters", CustomConverters.SerializeObjectCustom<PersonaFilterDto>(personaFilterDto) }
         };
-        var dt = await adoRepository.GetDataTableAsync($"{ModuleName}", parameters);
+        var dt = await adoRepository.GetDataTableAsync($"{ModuleName}Get", parameters);
         return CustomValidators.DataTableIsNull(dt)
             ? new ApiResponse { Code = "0", Message = "No se encontraron datos!" }
             : new ApiResponse { Code = "1", Payload = CustomConverters.DataTableToJson(dt) };
@@ -96,14 +103,22 @@ public class PersonService(
     public async Task<ApiResponse> UpdateAsync(int id, UpdatePersonDto updatePersonDto)
     {
 
-        if (!await context.Persons.AnyAsync(x=> x.Id == id))
+        if (!await context.Persons.AnyAsync(x => x.Id == id))
             return new ApiResponse { Code = "0", Message = "Persona no encontrada." };
 
         if (id != updatePersonDto.Id)
             return new ApiResponse { Code = "0", Message = "Ids no coinciden." };
 
 
+
         var identificationType = await context.IdentificationTypes.FindAsync(updatePersonDto.IdentificationTypeId);
+
+        if (identificationType.Code == "04" && !ValidateRuc(updatePersonDto.IdCard.Length))
+            return new ApiResponse { Code = "0", Message = "El ruc debe tener 13 digitos" };
+
+        if (identificationType.Code == "05" && !ValidateCedula(updatePersonDto.IdCard.Length))
+            return new ApiResponse { Code = "0", Message = "La cédula debe tener 10 digitos" };
+
 
         if (identificationType is null)
             return new ApiResponse { Code = "0", Message = "Tipo de identificación no encontrado." };
@@ -127,5 +142,14 @@ public class PersonService(
     private static string CreateCode(string idCard, string identificationTypeCode)
     {
         return $"{idCard}{identificationTypeCode}";
+    }
+
+    private static bool ValidateCedula(int idCardLength)
+    {
+        return idCardLength == 10;
+    }
+    private static bool ValidateRuc(int idCardLength)
+    {
+        return idCardLength == 13;
     }
 }

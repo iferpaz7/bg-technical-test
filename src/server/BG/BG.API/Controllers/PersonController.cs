@@ -10,6 +10,7 @@ public class PersonController(IPersonService personService) : BaseApiController
     [HttpGet]
     public async Task<ActionResult> Get([FromQuery] PersonaFilterDto personaFilterDto)
     {
+        personaFilterDto.UserId = User.GetUserId();
         return Ok(await personService.GetAsync(personaFilterDto));
     }
 
