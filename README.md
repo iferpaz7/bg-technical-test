@@ -10,3 +10,4 @@ Para aplicar las migraciones se debe ejecutar el siguiente comando en la consola
 # Swagger
 Para visualizar la documentación de la API se debe ejecutar el proyecto y acceder a la siguiente URL:
 ```https://localhost:7088/openapi/v1.json```
+```https://localhost:7088/swagger```
