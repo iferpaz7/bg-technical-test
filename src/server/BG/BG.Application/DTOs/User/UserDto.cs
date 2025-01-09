@@ -1,4 +1,4 @@
-﻿namespace BG.Application.DTOs;
+﻿namespace BG.Application.DTOs.User;
 
 public class UserDto
 {

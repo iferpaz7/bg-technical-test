@@ -1,4 +1,6 @@
-﻿namespace BG.Application.Mappings;
+﻿using BG.Application.DTOs.User;
+
+namespace BG.Application.Mappings;
 
 public class UserMappingProfile : Profile
 {

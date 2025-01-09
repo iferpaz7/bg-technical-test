@@ -25,7 +25,7 @@ public static class ParametersUtils
         cmd.Parameters.Add(sqlParam);
     }
 
-    public static object? GetParameter(SqlCommand command, string parameterName)
+    public static object GetParameter(SqlCommand command, string parameterName)
     {
         return command.Parameters[parameterName].Value;
     }

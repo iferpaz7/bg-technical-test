@@ -14,7 +14,8 @@ public static class ApplicationServicesExtensions
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddDbContextPool<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                x => x.MigrationsAssembly("BG.Infrastructure"))); //Migrations in infrastructure library
 
         services.AddControllers();
 

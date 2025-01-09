@@ -1,9 +1,13 @@
-﻿namespace BG.Application.Interfaces.Services;
+﻿using BG.Application.DTOs.Person;
+using BG.Application.DTOs.User;
+
+namespace BG.Application.Interfaces.Services;
 
 public interface IPersonService
 {
-    Task<ApiResponse> AddAsync(Person person);
+    Task<ApiResponse> AddAsync(CreatePersonDto personDto);
     Task<ApiResponse> DeleteAsync(int userId, int id);
-    Task<ApiResponse> GetAsync(Dictionary<string, object> parameters);
-    Task<ApiResponse> UpdateAsync(int id, Person person);
+    Task<ApiResponse> GetAsync(PersonaFilterDto personaFilterDto);
+    Task<ApiResponse> GetByIdAsync(int id);
+    Task<ApiResponse> UpdateAsync(int id, UpdateUserDto personDto);
 }

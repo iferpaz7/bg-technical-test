@@ -1,9 +1,11 @@
-﻿namespace BG.Application.Interfaces.Services;
+﻿using BG.Application.DTOs.User;
+
+namespace BG.Application.Interfaces.Services;
 
 public interface IUserService
 {
     Task<ApiResponse> AddAsync(CreateUserDto createUserDto);
     Task<ApiResponse> DeleteAsync(int userId, int id);
-    Task<ApiResponse> GetAsync(Dictionary<string, object> parameters);
+    Task<ApiResponse> GetAsync(UserFilterDto userFilterDto);
     Task<ApiResponse> UpdateAsync(int id, UpdateUserDto updateUserDto);
 }
