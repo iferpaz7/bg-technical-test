@@ -11,14 +11,12 @@ public class ExceptionMiddleware(
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        string requestBody = string.Empty;
+        var requestBody = string.Empty;
 
         try
         {
             if (context.Request.Method == HttpMethods.Post || context.Request.Method == HttpMethods.Put)
-            {
                 requestBody = await ReadRequestBodyAsync(context);
-            }
             await next(context);
         }
         catch (Exception ex)
@@ -39,15 +37,17 @@ public class ExceptionMiddleware(
                     Status = context.Response.StatusCode,
                     Title = "Server Error: " + ex.Message,
                     Detail = stackTrace
-                } : new ProblemDetails
+                }
+                : new ProblemDetails
                 {
                     Status = context.Response.StatusCode,
-                    Title = "Server Error" + ex.Message,
+                    Title = "Server Error" + ex.Message
                 };
 
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
     }
+
     private async Task<string> ReadRequestBodyAsync(HttpContext context)
     {
         var request = context.Request;
@@ -57,6 +57,7 @@ public class ExceptionMiddleware(
         {
             requestContent = await reader.ReadToEndAsync();
         }
+
         request.Body.Position = 0; // Rewind the stream to 0
 
         return requestContent;

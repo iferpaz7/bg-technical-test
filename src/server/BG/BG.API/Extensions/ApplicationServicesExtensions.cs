@@ -1,10 +1,8 @@
-﻿using BG.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Scrutor;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.RateLimiting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Scrutor;
 
 namespace BG.API.Extensions;
 
@@ -15,7 +13,7 @@ public static class ApplicationServicesExtensions
     {
         //MAPPING DTOs
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        
+
         services.AddControllers().AddNewtonsoftJson(x =>
         {
             x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -29,7 +27,7 @@ public static class ApplicationServicesExtensions
         {
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
                 RateLimitPartition.GetFixedWindowLimiter(
-                    partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(), factory: partition =>
+                    httpContext.Connection.RemoteIpAddress?.ToString(), partition =>
                         new FixedWindowRateLimiterOptions
                         {
                             AutoReplenishment = true,

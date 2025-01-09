@@ -6,6 +6,7 @@ using BG.Infrastructure.Data;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,12 +28,12 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-            x => x.MigrationsAssembly("BG.Infrastructure"))  //Migrations in infrastructure library
-        .EnableSensitiveDataLogging(isDevelopment) // Enable only in Development
-        .EnableDetailedErrors(isDevelopment)
-        .LogTo(Log.Information, LogLevel.Information) // Log EF Core queries using Serilog
-    );
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+                x => x.MigrationsAssembly("BG.Infrastructure")) //Migrations in infrastructure library
+            .EnableSensitiveDataLogging(isDevelopment) // Enable only in Development
+            .EnableDetailedErrors(isDevelopment)
+            .LogTo(Log.Information, LogLevel.Information) // Log EF Core queries using Serilog
+);
 
 
 builder.Services.AddApplicationServices(builder.Configuration);
@@ -44,7 +45,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(corsPolicy, policy =>
     {
         policy.WithOrigins(safeOrigins)
-            .SetIsOriginAllowed(isOriginAllowed: _ => true)
+            .SetIsOriginAllowed(_ => true)
             .SetIsOriginAllowedToAllowWildcardSubdomains()
             .AllowCredentials()
             .AllowAnyHeader()
@@ -102,7 +103,7 @@ app.UseSerilogRequestLogging(options =>
 // Middleware to enrich logs with custom properties
 app.Use(async (context, next) =>
 {
-    using (Serilog.Context.LogContext.PushProperty("UserId", context.User?.Identity?.Name ?? "Anonymous"))
+    using (LogContext.PushProperty("UserId", context.User?.Identity?.Name ?? "Anonymous"))
     {
         await next();
     }

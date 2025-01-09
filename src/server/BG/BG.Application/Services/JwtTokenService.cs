@@ -22,14 +22,14 @@ public class JwtTokenService : IJwtTokenService
         _expiryMinutes = Convert.ToInt32(_configuration["JwtSettings:ExpirationInMinutes"]);
     }
 
-    public string Create(UserDto appUser)
+    public string Create(UserDto userDto)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Name, appUser.Username ?? ""),
-            new(JwtRegisteredClaimNames.Sub, Convert.ToString(appUser.Id)),
-            new(ClaimTypes.NameIdentifier, Convert.ToString(appUser.Id))
+            new(JwtRegisteredClaimNames.Name, userDto.Username ?? ""),
+            new(JwtRegisteredClaimNames.Sub, Convert.ToString(userDto.Id)),
+            new(ClaimTypes.NameIdentifier, Convert.ToString(userDto.Id))
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
