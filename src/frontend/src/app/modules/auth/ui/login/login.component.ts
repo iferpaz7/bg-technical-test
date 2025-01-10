@@ -15,18 +15,16 @@ import {
 } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatAnchor, MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatButton } from '@angular/material/button';
 import { AuthUseCase } from '@modules/auth/domain/use-cases/auth.use-case';
 import { User } from '@modules/auth/domain/models/user.model';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { IdentificationType } from '@shared/models/identification-type';
 import { IdentificationTypeService } from '@shared/services/identification-type.service';
 import { ToasterService } from 'acontplus-utils';
-import {SocialLinksComponent} from "@shared/components/social-links/social-links.component";
-import {ThemeToggleComponent} from "@core/theme/theme-toggle.component";
+import { SocialLinksComponent } from '@shared/components/social-links/social-links.component';
+import { ThemeToggleComponent } from '@core/theme/theme-toggle.component';
 
 @Component({
   selector: 'app-login',
@@ -105,22 +103,22 @@ export class LoginComponent {
 
   signup() {
     let identificationTypeCode = this.identificationTypes.find(
-      (x: IdentificationType) =>
-        (x.id = <number>this.signupForm.value.identificationTypeId),
+      (x) => x.id === this.signupForm.get('identificationTypeId')?.value,
     )?.code;
-    if (
-      this.signupForm.value.idCard?.length !== 13 &&
-      identificationTypeCode === '04'
-    ) {
+
+    let idCardLength = this.signupForm.get('idCard')?.value?.length;
+
+    console.log(this.signupForm.value);
+    console.log(identificationTypeCode);
+    console.log(idCardLength);
+
+    if (idCardLength !== 13 && identificationTypeCode === '04') {
       return this._tS.toastr({
         type: 'warning',
         message: 'El ruc debe tener 13 dígitos',
       });
     }
-    if (
-      this.signupForm.value.idCard?.length !== 10 &&
-      identificationTypeCode === '05'
-    ) {
+    if (idCardLength !== 10 && identificationTypeCode === '05') {
       return this._tS.toastr({
         type: 'warning',
         message: 'La cédula debe tener 10 dígitos',
