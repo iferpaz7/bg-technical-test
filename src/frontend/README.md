@@ -12,48 +12,32 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+# Ejecución de la Aplicación
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Inicio Unificado del Backend y Frontend
+Este proyecto está configurado para utilizar un **SPA Proxy**. Cuando se inicia la API backend en .NET, automáticamente lanza y sirve la aplicación Angular. Esto significa que **no es necesario iniciar el frontend Angular por separado**, ya que se servirá a través del backend durante el desarrollo.  
+Esta configuración simplifica el flujo de trabajo al reducir la cantidad de comandos necesarios para ejecutar la aplicación completa.
 
-```bash
-ng generate component component-name
-```
+## Habilitar SSL en Angular
+Para habilitar **SSL** en la aplicación Angular durante el desarrollo local, sigue estos pasos:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. **Instalar el Certificado**  
+   Un certificado autofirmado está incluido en la carpeta `ssl`. Debes instalar este certificado en tu máquina para habilitar HTTPS en tu entorno de desarrollo.
 
-```bash
-ng generate --help
-```
+   - Ubica el archivo `server.crt` dentro de la carpeta `ssl`.
+   - Instala el certificado en tu sistema operativo:
+     - **Windows**:  
+       Haz doble clic en el archivo `server.crt` y sigue los pasos para instalarlo. Asegúrate de colocarlo en el almacén "Entidades de certificación raíz de confianza".
+     - **macOS**:  
+       Abre la aplicación "Acceso a llaveros" (Keychain Access), arrastra el archivo `server.crt` al llavero del sistema y configúralo como "Confiar siempre".
+     - **Linux**:  
+       Copia el certificado a la carpeta correspondiente, como `/usr/local/share/ca-certificates/`, y ejecuta `sudo update-ca-certificates`.
 
-## Building
+2. **Verificar la Configuración**  
+   Una vez instalado el certificado, la aplicación Angular se ejecutará con soporte para HTTPS, y podrás acceder a ella de manera segura a través del proxy del backend.
 
-To build the project run:
+## Notas
+- Asegúrate de haber instalado todas las dependencias ejecutando el comando:
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+  ```bash
+  npm install

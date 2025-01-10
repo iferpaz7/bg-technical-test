@@ -55,31 +55,37 @@ public class UserService(
 
     public async Task<ApiResponse> GetAsync(UserFilterDto userFilterDto)
     {
-        var query = from user in context.Users
-                    select new
-                    {
-                        user,
-                    };
+        var query = context.Users.AsQueryable();
 
+        // Apply text search filter if provided
         if (!string.IsNullOrEmpty(userFilterDto.TextSearch))
-            query = query.Where(x =>
-                x.user.Username.Contains(userFilterDto.TextSearch)
-            );
+        {
+            query = query.Where(user => user.Username.Contains(userFilterDto.TextSearch));
+        }
 
+        // Get total records count before applying pagination
         var totalRecords = await query.CountAsync();
 
+        // Apply pagination and map to DTO
         var users = await query
-            .Select(x => new
-            {
-                x.user,
-            })
             .Skip((userFilterDto.PageIndex - 1) * userFilterDto.PageSize)
             .Take(userFilterDto.PageSize)
+            .Select(user => new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Enabled = user.Enabled ?? false
+            })
             .ToListAsync();
 
-        if (users.Count == 0)
+        if (!users.Any())
         {
-            return new ApiResponse { Code = "0", Message = "Data not found!", Payload = new { TotalRecords = 0 } };
+            return new ApiResponse
+            {
+                Code = "0",
+                Message = "No se encontro usuarios!",
+                Payload = new { TotalRecords = 0 }
+            };
         }
 
         return new ApiResponse
@@ -92,6 +98,7 @@ public class UserService(
             }
         };
     }
+
     public async Task<ApiResponse> GetByIdAsync(int id)
     {
         var user = await context.Users.FindAsync(id);
