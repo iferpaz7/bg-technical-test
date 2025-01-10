@@ -1,0 +1,35 @@
+<form [formGroup]="userForm" (ngSubmit)="onSave()" autocomplete="off">
+  <app-mat-custom-dialog
+    [containerTemplate]="contentTemplate"
+    [actionsTemplate]="actionsTemplate"
+    [icon]="dialogIcon()"
+    [title]="dialogTitle()"
+    (close)="onClose()"
+  />
+  <ng-template #contentTemplate>
+    <mat-form-field class="w-100">
+      <mat-label>Usuario:</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="username"
+        placeholder="ivan.paz"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Contraseña:</mat-label>
+      <input type="password" matInput formControlName="password" required />
+    </mat-form-field>
+  </ng-template>
+  <ng-template #actionsTemplate>
+    <button mat-raised-button>
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Save Icon"
+        fontIcon="save"
+      ></mat-icon>
+      Guardar
+    </button>
+  </ng-template>
+</form>

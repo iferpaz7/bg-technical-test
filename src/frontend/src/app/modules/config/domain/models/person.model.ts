@@ -5,6 +5,7 @@ export interface Person {
   fullName: string;
   email: string;
   idCard: string;
-  tipoDocumento: string;
+  identificationType: string;
+  identificationTypeId: number;
   enabled?: boolean;
 }

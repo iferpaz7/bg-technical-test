@@ -34,11 +34,11 @@
 
     <ng-template #tableOptions let-item="item">
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item type="button" (click)="onEdit(item)">
           <mat-icon>edit</mat-icon>
           Editar
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item type="button" (click)="onDelete(item)">
           <mat-icon>delete</mat-icon>
           Eliminar
         </button>

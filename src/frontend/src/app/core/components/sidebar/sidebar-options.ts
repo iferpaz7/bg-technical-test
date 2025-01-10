@@ -17,4 +17,9 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     title: 'Personas',
     icon: 'users',
   },
+  {
+    path: 'config/user',
+    title: 'Usuarios',
+    icon: 'user-group',
+  },
 ];
