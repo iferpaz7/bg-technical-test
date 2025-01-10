@@ -1,58 +1,53 @@
 import { Component, inject, signal } from '@angular/core';
-import { ColumnDefinition, Pagination } from 'acontplus-utils';
-import { Person } from '@config/domain/models/person.model';
-import { PersonUseCase } from '@config/domain/use-cases/person.use-case';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatButton } from '@angular/material/button';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardSubtitle,
+} from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatDynamicTableComponent } from '@shared/components/mat-dynamic-table/mat-dynamic-table.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Person } from '@config/domain/models/person.model';
 import { MatPagination } from '@shared/models/pagination';
 import { DialogService } from '@shared/services/dialog.service';
 import { PersonAddEditComponent } from '@config/ui/person/components/person-add-edit/person-add-edit.component';
 import Swal from 'sweetalert2';
+import { User } from '@modules/auth/domain/models/user.model';
+import { UserUseCase } from '@config/domain/use-cases/user.use-case';
+import { UserAddEditComponent } from '@config/ui/user/components/user-add-edit/user-add-edit.component';
 
 @Component({
-  selector: 'app-person',
+  selector: 'app-user',
   imports: [
-    MatMenu,
-    MatIcon,
-    MatMenuItem,
-    MatMenuTrigger,
-    MatIconButton,
-    MatCardContent,
-    MatCard,
-    MatPaginator,
-    MatDynamicTableComponent,
     MatButton,
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    MatPaginator,
+    MatCardTitle,
+    MatCardHeader,
+    MatCardActions,
+    MatCardSubtitle,
   ],
-  templateUrl: './person.component.html',
-  styleUrl: './person.component.scss',
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.scss',
 })
-export class PersonComponent {
-  columnDefs: ColumnDefinition[] = [
-    { key: 'op', label: 'Op.', type: 'string' },
-    { key: 'firstName', label: 'Nombre', type: 'string' },
-    { key: 'lastName', label: 'Apellido', type: 'string' },
-    { key: 'fullName', label: 'Nombre Completo', type: 'string' },
-    { key: 'identificationType', label: 'T. Ident.', type: 'string' },
-    { key: 'idCard', label: 'Nro. Ident.', type: 'string' },
-    { key: 'email', label: 'Correo', type: 'string' },
-  ];
-  columns: string[] = this.columnDefs.map((colDef) => colDef.key);
-  persons: Person[] = [];
+export class UserComponent {
+  users: User[] = [];
   pagination = signal(new MatPagination());
 
   private readonly _dialogService = inject(DialogService);
 
-  private readonly _personUseCase = inject(PersonUseCase);
+  private readonly _userUseCase = inject(UserUseCase);
 
   loadData() {
     this.pagination().pageIndex = this.pagination().pageIndex + 1;
     const params = this.pagination();
-    this._personUseCase.get(params).subscribe((response) => {
-      this.persons = response.persons;
+    this._userUseCase.get(params).subscribe((response) => {
+      this.users = response.users;
       this.pagination.update((e) => {
         return {
           ...e,
@@ -80,8 +75,8 @@ export class PersonComponent {
   }
 
   onDialogOpen() {
-    const dialogRef = this._dialogService.open(PersonAddEditComponent, {
-      size: 'lg',
+    const dialogRef = this._dialogService.open(UserAddEditComponent, {
+      size: 'sm',
     });
     dialogRef.subscribe((response) => {
       if (typeof response === 'object' && response.code === '1') {
@@ -90,9 +85,9 @@ export class PersonComponent {
     });
   }
 
-  onEdit(item: Person) {
-    const dialogRef = this._dialogService.open(PersonAddEditComponent, {
-      size: 'lg',
+  onEdit(item: User) {
+    const dialogRef = this._dialogService.open(UserAddEditComponent, {
+      size: 'sm',
       data: item,
     });
     dialogRef.subscribe((response) => {
@@ -102,7 +97,7 @@ export class PersonComponent {
     });
   }
 
-  onDelete(item: Person) {
+  onDelete(item: User) {
     Swal.fire({
       icon: 'warning',
       title: 'Advertencia!',
@@ -113,7 +108,7 @@ export class PersonComponent {
       allowOutsideClick: false,
     }).then((response) => {
       if (response.isConfirmed) {
-        this._personUseCase.delete(item.id).subscribe((result) => {
+        this._userUseCase.delete(item.id).subscribe((result) => {
           Swal.fire({
             icon: result.code == '1' ? 'info' : 'warning',
             title: 'Persona',
