@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "6e8a64ac-a3f8-4b88-931d-22a4c91873d7",
+		"name": "BG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24934369"
+	},
+	"item": [
+		{
+			"name": "Tipo Identificacion",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Client-Id",
+						"value": "app-bg-tech-test",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/IdentificationType",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"IdentificationType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ivan.paz\",\r\n    \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
