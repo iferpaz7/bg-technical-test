@@ -1,4 +1,5 @@
 ﻿using BG.Application.DTOs.Person;
+using BG.Application.DTOs.User;
 using Common.Utils.Security.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -57,7 +58,7 @@ public class PersonService(
 
         await context.SaveChangesAsync();
 
-        return new ApiResponse { Code = "1", Message = "Persona creada correctamente." };
+        return new ApiResponse { Code = "1", Message = "Persona creada correctamente.", Payload = mapper.Map<UserDto>(user) };
     }
 
     public async Task<ApiResponse> DeleteAsync(int userId, int id)

@@ -1,4 +1,3 @@
-using Autofac.Extensions.DependencyInjection;
 using BG.API.Extensions;
 using BG.API.Extensions.Documentation;
 using BG.API.Middleware;
@@ -60,6 +59,8 @@ builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddVersioningAndSwagger();
 
+//Response compression
+
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true;
@@ -72,9 +73,6 @@ builder.Services.Configure<GzipCompressionProviderOptions>(options =>
 {
     options.Level = CompressionLevel.SmallestSize;
 });
-
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
 
 var app = builder.Build();
 

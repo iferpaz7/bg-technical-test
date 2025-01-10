@@ -28,10 +28,10 @@ public class PersonController(IPersonService personService) : BaseApiController
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody] UpdatePersonDto updateUserDto)
+    public async Task<ActionResult> Put(int id, [FromBody] UpdatePersonDto updatePersonDto)
     {
-        updateUserDto.UserId = User.GetUserId();
-        return Ok(await personService.UpdateAsync(id, updateUserDto));
+        updatePersonDto.UserId = User.GetUserId();
+        return Ok(await personService.UpdateAsync(id, updatePersonDto));
     }
 
     [HttpDelete("{id}")]

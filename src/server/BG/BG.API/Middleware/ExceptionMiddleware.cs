@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
-using System.Diagnostics;
 
 namespace BG.API.Middleware;
 
