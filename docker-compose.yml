@@ -1,0 +1,6 @@
+services:
+  bg.api:
+    image: ${DOCKER_REGISTRY-}bgapi
+    build:
+      context: .
+      dockerfile: src/server/BG/BG.API/Dockerfile

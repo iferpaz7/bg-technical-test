@@ -10,6 +10,7 @@ public class PersonController(IPersonService personService) : BaseApiController
     [HttpGet]
     public async Task<ActionResult> Get([FromQuery] PersonaFilterDto personaFilterDto)
     {
+        personaFilterDto.UserId = User.GetUserId();
         return Ok(await personService.GetAsync(personaFilterDto));
     }
 
@@ -27,10 +28,10 @@ public class PersonController(IPersonService personService) : BaseApiController
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody] UpdatePersonDto updateUserDto)
+    public async Task<ActionResult> Put(int id, [FromBody] UpdatePersonDto updatePersonDto)
     {
-        updateUserDto.UserId = User.GetUserId();
-        return Ok(await personService.UpdateAsync(id, updateUserDto));
+        updatePersonDto.UserId = User.GetUserId();
+        return Ok(await personService.UpdateAsync(id, updatePersonDto));
     }
 
     [HttpDelete("{id}")]

@@ -53,19 +53,6 @@ public class UserService(
         return new ApiResponse { Code = "1", Message = "Usuario eliminado correctamente." };
     }
 
-    public async Task<ApiResponse> LoginAsync(LoginDto loginDto)
-    {
-        var user = await context.Users.FirstOrDefaultAsync(x =>
-            x.Username == loginDto.Username);
-
-        var decryptedPassword =
-            await encryptionService.DecryptFromBytesAsync(passphrase, user.Password);
-
-        return loginDto.Password != decryptedPassword
-            ? new ApiResponse { Code = "0", Message = "Contraseña incorrecta." }
-            : new ApiResponse { Code = "1", Message = "Login Correcto" };
-    }
-
     public async Task<ApiResponse> GetAsync(UserFilterDto userFilterDto)
     {
         var query = from user in context.Users
@@ -104,6 +91,14 @@ public class UserService(
                 Users = users
             }
         };
+    }
+    public async Task<ApiResponse> GetByIdAsync(int id)
+    {
+        var user = await context.Users.FindAsync(id);
+
+        return user is null
+            ? new ApiResponse { Code = "0", Message = "Usuario no encontrado!" }
+            : new ApiResponse { Code = "1", Payload = mapper.Map<UserDto>(user) };
     }
 
     public async Task<ApiResponse> UpdateAsync(int id, UpdateUserDto updateUserDto)

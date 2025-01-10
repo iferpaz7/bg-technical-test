@@ -7,20 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BG.API.Controllers;
 
-public class AccountController(IUserService userService, IPersonService personService, IJwtTokenService jwtTokenService)
+public class AccountController(IAccountService accountService, IPersonService personService, IJwtTokenService jwtTokenService)
     : BaseApiController
 {
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        var response = await userService.LoginAsync(loginDto);
+        var response = await accountService.LoginAsync(loginDto);
 
         if (response.Code == "1")
             response.Payload = new
             {
                 loginDto.Username,
-                Token = jwtTokenService.Create(new UserDto { Username = loginDto.Username })
+                Token = jwtTokenService.Create(response.Payload as UserDto)
             };
 
         return Ok(response);
@@ -37,8 +37,7 @@ public class AccountController(IUserService userService, IPersonService personSe
             response.Payload = new
             {
                 createPersonDto.Username,
-                Token = jwtTokenService.Create(new UserDto
-                { Username = createPersonDto.Username }),
+                Token = jwtTokenService.Create(response.Payload as UserDto)
             };
 
         return Ok(response);

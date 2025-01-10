@@ -1,6 +1,84 @@
-@BG.API_HostAddress = http://localhost:5134
+@BG.API_HostAddress = https://localhost:7088
 
-GET {{BG.API_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{BG.API_HostAddress}}/api/account/login
+Content-Type: application/json
+
+{
+  //LoginDto
+}
+
+###
+
+POST {{BG.API_HostAddress}}/api/account/register
+Content-Type: application/json
+
+{
+  //CreatePersonDto
+}
+
+###
+
+GET {{BG.API_HostAddress}}/api/identificationtype
+
+###
+
+GET {{BG.API_HostAddress}}/api/person
+
+###
+
+POST {{BG.API_HostAddress}}/api/person
+Content-Type: application/json
+
+{
+  //CreatePersonDto
+}
+
+###
+
+@id=0
+DELETE {{BG.API_HostAddress}}/api/person/{{id}}
+
+###
+
+GET {{BG.API_HostAddress}}/api/person/{{id}}
+
+###
+
+PUT {{BG.API_HostAddress}}/api/person/{{id}}
+Content-Type: application/json
+
+{
+  //UpdatePersonDto
+}
+
+###
+
+GET {{BG.API_HostAddress}}/api/user
+
+###
+
+POST {{BG.API_HostAddress}}/api/user
+Content-Type: application/json
+
+{
+  //CreateUserDto
+}
+
+###
+
+DELETE {{BG.API_HostAddress}}/api/user/{{id}}
+
+###
+
+GET {{BG.API_HostAddress}}/api/user/{{id}}
+
+###
+
+PUT {{BG.API_HostAddress}}/api/user/{{id}}
+Content-Type: application/json
+
+{
+  //UpdateUserDto
+}
 
 ###
